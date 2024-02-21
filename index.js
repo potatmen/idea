@@ -1,13 +1,10 @@
 import express from "express"
-import cors from "cors";
-import { v4 as uuidv4 } from 'uuid';
-import { WebSocketServer } from "ws";
 import cryptoRouter from "./src/routers/cryptoRouter.js";
 import http from 'http';
+import { startCronJob } from "./src/cronJob/cronJob.js";
+import { Server } from "socket.io";
 
 const app = express();
-app.use(cors({ origin: true }));
-app.set('trust proxy', true)
 
 // parse requests of content-type - application/json
 app.use(express.json({
@@ -21,29 +18,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/crypto", cryptoRouter);
 
 const server = http.createServer(app);
+const io = new Server(server);
 
+io.on('connection', (socket) => {
+    console.log('a user connected');
 
-// set port, listen for requests
-const wsServer = new WebSocketServer({ server });
-
-// Maintain active connections
-const clients = {};
-
-// Handle new client connections
-wsServer.on("connection", function handleNewConnection(connection) {
-    const userId = uuidv4();
-    console.log("Received a new connection");
-
-    clients[userId] = connection;
-    console.log(`${userId} connected.`);
-
-    connection.on("close", () => {
-        console.log(`${userId} disconnected.`);
-        delete clients[userId]
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
     });
 });
+
+global.mapObject = new Map();
 
 const PORT = 8080;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+
+startCronJob(io);
