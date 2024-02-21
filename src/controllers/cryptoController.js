@@ -5,27 +5,28 @@ const cryptoController = {
         try {
             const coins = ["bitcoin", "ethereum", "litecoin", "monero", "xrp", "dogecoin", "dash"];
             var response = [];
-            coins.forEach(coin => {
 
+            for (const coin of coins) {
+                //console.log("here");
                 var config = {
                     method: 'get',
                     maxBodyLength: Infinity,
-                    url: `api.coincap.io/v2/assets/${coin}`,
+                    url: `https://api.coincap.io/v2/assets/${coin}`,
                     headers: {}
                 };
-
-                axios(config)
+                
+                await axios(config)
                     .then(function (resp) {
+                        //console.log(resp.data.data);
                         var data = {
                             type: coin,
-                            price: resp.data.priceUsd,
-                            volume: resp.data.volumeUsd24Hr,
-                            change: resp.data.changePercent24Hr
+                            price: resp.data.data.priceUsd,
+                            volume: resp.data.data.volumeUsd24Hr,
+                            change: resp.data.data.changePercent24Hr
                         }
                         response.push(data);
-                    })
-            });
-
+                    });
+            }
             res.status(200).send({ status: "Success", message: response });
 
         } catch (error) {
