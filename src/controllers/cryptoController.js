@@ -1,14 +1,10 @@
-import axios from "axios"
-
+import studentModel from "./../schemas/schema.js"
 const cryptoController = {
     async getPrices(req, res) {
         try {
-            var response = [];
-            for (let [key, value] of global.mapObject) {
-                response.push({key, value});
-            }
-            console.log(response);
-            res.status(200).send({ status: "Success", message: response });
+            //console.log(req.body);
+            var ans = await studentModel.find();
+            res.status(200).send({ status: "Success", message: ans });
 
         } catch (error) {
             res.status(503).send({ status: "Service Unavailable", message: error.message });
