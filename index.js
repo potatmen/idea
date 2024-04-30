@@ -1,5 +1,5 @@
 import express from "express"
-import cryptoRouter from "./src/routers/cryptoRouter.js";
+import cryptoRouter from "./src/routers/reqRouter.js";
 import http from 'http';
 import connectDB from "./src/db.js";
 

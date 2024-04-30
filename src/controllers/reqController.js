@@ -1,5 +1,5 @@
-import studentModel from "./../schemas/schema.js"
-const cryptoController = {
+import studentModel from "../schemas/schema.js"
+const reqController = {
     async getPrices(req, res) {
         try {
             //console.log(req.body);
@@ -12,4 +12,4 @@ const cryptoController = {
     }
 }
 
-export default cryptoController;
+export default reqController;
