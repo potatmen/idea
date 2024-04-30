@@ -1,5 +1,5 @@
 node_modules
 .vscode
 .env.development
-package*
-.gitignore
+package-lock.json
+package.json
