@@ -1,0 +1,23 @@
+version: '3'
+services:
+  backend:
+    build: ../server
+    environment:
+      - PORT=3000 
+    deploy:
+      replicas: 3
+    networks:
+      - loadbalance_net
+  nginx:
+    build: ../nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    networks:
+      - loadbalance_net
+    depends_on:
+      - backend
+networks:
+  loadbalance_net:
+#loadbalance_net
+#base_image
