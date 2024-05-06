@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 
 
 export default function connectDB()
 {
 mongoose.set('strictQuery', false);
-mongoose.connect("mongodb+srv://ashatokhi2:NeZloB_007@cluster0.rktsv1o.mongodb.net/").then(() => {
+mongoose.connect(process.env.MONGO_CONNECT).then(() => {
     console.log('Connected to MongoDB.');});
 }
